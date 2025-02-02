@@ -1,30 +1,28 @@
 import SimpleITK as sitk
 import numpy as np
+import scipy.ndimage as ndi
 import matplotlib.pyplot as plt
-image = sitk.ReadImage('dataset/training_data/Case00_segmentation.mhd')
+from ipywidgets import interact
+
+image = sitk.ReadImage('dataset/training_data/Case01_segmentation.mhd')
 image_array = sitk.GetArrayViewFromImage(image)
 
-depth, height, width = image_array.shape
-
-slice_z = image_array[depth//2, :, :]
-slice_y = image_array[:, height//2, :]
-slice_x = image_array[:, :, width//2]
-
-fig, axes = plt.subplots(1, 3, figsize = (15,5))
-
-axes[0].imshow(slice_z, cmap = 'grey')
-axes[0].axis('off')
-
-axes[1].imshow(slice_y, cmap='gray')
-# axes[1].set_title('Sagittal Slice (Y)')
-axes[1].axis('off')
-
-axes[2].imshow(slice_x, cmap='gray')
-# axes[2].set_title('Coronal Slice (X)')
-axes[2].axis('off')
+row = 3
+col = 3
 
 
-# plt.tight_layout()
+no_of_subplots = row * col
+no_of_slides = image_array.shape[0]
+step_size = no_of_slides // no_of_subplots
+plot_range = no_of_subplots * step_size
+start_stop = int((no_of_slides - plot_range) / 2)
+
+
+fig, axes = plt.subplots(row, col, figsize= (10,10))
+
+for idx, img in enumerate(range(start_stop, plot_range, step_size)):
+    axes.flat[idx].imshow(image_array[img,:, :], cmap = 'gray')
+    axes.flat[idx].axis('off')
+    
+plt.tight_layout()
 plt.show()
-print(image)
-
