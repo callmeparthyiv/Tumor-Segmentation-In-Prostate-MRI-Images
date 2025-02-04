@@ -1,28 +1,44 @@
 import SimpleITK as sitk
-import numpy as np
-import scipy.ndimage as ndi
 import matplotlib.pyplot as plt
-from ipywidgets import interact
+import glob
 
-image = sitk.ReadImage('dataset/training_data/Case01_segmentation.mhd')
+#dividing training data and ground truth
+path_of_data = 'dataset/training_data/'
+list_of_segmentation_data = glob.glob(path_of_data+'*_segmentation.mhd', recursive=True)
+list_data = glob.glob(path_of_data+'*.mhd', recursive=True)
+list_of_train_data = []
+
+for i in list_data:
+    if(i not in list_of_segmentation_data):
+        list_of_train_data.append(i)
+
+
+#reading data for analysis
+image = sitk.ReadImage(list_of_train_data[0])
 image_array = sitk.GetArrayViewFromImage(image)
 
-row = 3
-col = 3
 
+no_of_slides = image_array.shape[0]
+
+#counting number of rows and columns
+if(no_of_slides%5 == 0):
+    row = (no_of_slides // 5)
+else:
+    row = (no_of_slides // 5) + 1
+
+col = 5
 
 no_of_subplots = row * col
-no_of_slides = image_array.shape[0]
-step_size = no_of_slides // no_of_subplots
-plot_range = no_of_subplots * step_size
-start_stop = int((no_of_slides - plot_range) / 2)
 
-
-fig, axes = plt.subplots(row, col, figsize= (10,10))
-
-for idx, img in enumerate(range(start_stop, plot_range, step_size)):
-    axes.flat[idx].imshow(image_array[img,:, :], cmap = 'gray')
-    axes.flat[idx].axis('off')
+#plotting the figures
+fig, axes = plt.subplots(row, col, figsize= (15,15))
+axes = axes.ravel()
+for i in range(no_of_slides):
+    axes[i].imshow(image_array[i, :, :], cmap = 'gray')
+    axes[i].axis('off')
     
+for j in range(no_of_slides, row * col):
+    axes[j].axis('off')  
+  
 plt.tight_layout()
 plt.show()
