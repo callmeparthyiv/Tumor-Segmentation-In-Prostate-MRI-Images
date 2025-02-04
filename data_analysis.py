@@ -14,12 +14,11 @@ for i in list_data:
 
 
 #reading data for analysis
-image = sitk.ReadImage(list_of_train_data[0])
+image = sitk.ReadImage(list_of_segmentation_data[3])
 image_array = sitk.GetArrayViewFromImage(image)
 
 
 no_of_slides = image_array.shape[0]
-
 #counting number of rows and columns
 if(no_of_slides%5 == 0):
     row = (no_of_slides // 5)
