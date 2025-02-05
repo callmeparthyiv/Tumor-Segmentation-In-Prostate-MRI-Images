@@ -13,31 +13,33 @@ for i in list_data:
         list_of_train_data.append(i)
 
 
-#reading data for analysis
-image = sitk.ReadImage(list_of_segmentation_data[3])
+def show(image_array):
+    no_of_slides = image_array.shape[0]
+    #counting number of rows and columns
+    if(no_of_slides%5 == 0):
+        row = (no_of_slides // 5)
+    else:
+        row = (no_of_slides // 5) + 1
+
+    col = 5
+
+    no_of_subplots = row * col
+
+    #plotting the figures
+    fig, axes = plt.subplots(row, col, figsize= (15,15))
+    axes = axes.ravel()
+    for i in range(no_of_slides):
+        axes[i].imshow(image_array[i, :, :], cmap = 'gray')
+        axes[i].axis('off')
+        
+    for j in range(no_of_slides, row * col):
+        axes[j].axis('off')  
+    
+    plt.tight_layout()
+    plt.show() 
+
+    #reading data for analysis
+image = sitk.ReadImage(list_of_train_data[0])
 image_array = sitk.GetArrayViewFromImage(image)
 
-
-no_of_slides = image_array.shape[0]
-#counting number of rows and columns
-if(no_of_slides%5 == 0):
-    row = (no_of_slides // 5)
-else:
-    row = (no_of_slides // 5) + 1
-
-col = 5
-
-no_of_subplots = row * col
-
-#plotting the figures
-fig, axes = plt.subplots(row, col, figsize= (15,15))
-axes = axes.ravel()
-for i in range(no_of_slides):
-    axes[i].imshow(image_array[i, :, :], cmap = 'gray')
-    axes[i].axis('off')
-    
-for j in range(no_of_slides, row * col):
-    axes[j].axis('off')  
-  
-plt.tight_layout()
-plt.show()
+show(image_array)
