@@ -1,0 +1,5 @@
+#ignore .mhd files
+git rm --cached *.mhd
+
+#ignore .raw file
+git rm --cached *.raw
