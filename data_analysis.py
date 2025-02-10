@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import glob
 
 #dividing training data and ground truth
-path_of_data = 'dataset/training_data/'
+path_of_data = 'resized_preprocessed_dataset/training_data/'
 list_of_segmentation_data = glob.glob(path_of_data+'*_segmentation.mhd', recursive=True)
 list_data = glob.glob(path_of_data+'*.mhd', recursive=True)
 list_of_train_data = []
@@ -39,7 +39,7 @@ def show(image_array):
     plt.show() 
 
     #reading data for analysis
-image = sitk.ReadImage(list_of_train_data[0])
+image = sitk.ReadImage(list_of_segmentation_data[0])
 image_array = sitk.GetArrayViewFromImage(image)
-
+print(image_array.shape)
 show(image_array)
