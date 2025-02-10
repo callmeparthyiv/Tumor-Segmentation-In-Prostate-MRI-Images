@@ -4,9 +4,10 @@ import numpy as np
 import glob
 
 #input path
-path_of_data = 'dataset/training_data/'
+path_of_data = 'preprocessed_dataset/training_data/'
+
 #output path
-path_to_save_data = 'preprocessed_dataset/training_data/'
+path_to_save_data = 'resized_preprocessed_dataset/training_data/'
 
 #reading the inputs and returning training data as well as ground truth
 def read_data(path_of_data):
@@ -59,7 +60,37 @@ def consistent_slices(list_of_data):
         preprossed_array.SetDirection(image.GetDirection())
         sitk.WriteImage(preprossed_array, path_to_save_data+filename) 
     
-       
+def resize_img(list_of_data, label = False):
+    
+    
+    for i in range(50):
+        
+        filename = list_of_data[i][35:]
+        image = sitk.ReadImage(list_of_data[i])
+        new_size = [320, 320, image.GetSize()[2]]
+        original_size = image.GetSize()
+        original_spacing = image.GetSpacing()
+        new_spacing = [original_spacing[0] * (original_size[0] / new_size[0]),
+                    original_spacing[1] * (original_size[1] / new_size[1]),
+                    original_spacing[2]]
+        
+        if(label == False):
+                
+            resampled_img = sitk.Resample(image, new_size, sitk.Transform(), sitk.sitkLinear, 
+                                        image.GetOrigin(), new_spacing, image.GetDirection(),
+                                        0.0, image.GetPixelID())
+        else:
+            resampled_img = sitk.Resample(image, new_size, sitk.Transform(), sitk.sitkNearestNeighbor,
+                                          image.GetOrigin(), new_spacing, image.GetDirection(),
+                                          0.0, image.GetPixelID())
+
+
+        sitk.WriteImage(resampled_img, path_to_save_data+filename)       
+
+
+
 
 list_of_segmentation_data, list_of_train_data = read_data(path_of_data) 
-consistent_slices(list_of_segmentation_data)
+#resize_img(list_of_segmentation_data)    
+
+# consistent_slices(list_of_segmentation_data)
