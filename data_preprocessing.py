@@ -4,10 +4,10 @@ import numpy as np
 import glob
 
 #input path
-path_of_data = 'preprocessed_dataset/training_data/'
+path_of_data = 'preprocessed_dataset/test_data/'
 
 #output path
-path_to_save_data = 'resized_preprocessed_dataset/training_data/'
+path_to_save_data = 'resized_preprocessed_dataset/test_data/'
 
 #reading the inputs and returning training data as well as ground truth
 def read_data(path_of_data):
@@ -29,9 +29,9 @@ def consistent_slices(list_of_data):
     #number of slices needed for each image
     no_of_target_slice = 27
 
-    for i in range(50):
+    for i in range(30):
         #name of the input file
-        filename = list_of_data[i][22:]
+        filename = list_of_data[i][18:]
         
         #reading an image
         image = sitk.ReadImage(list_of_data[i])
@@ -63,9 +63,9 @@ def consistent_slices(list_of_data):
 def resize_img(list_of_data, label = False):
     
     
-    for i in range(50):
+    for i in range(30):
         
-        filename = list_of_data[i][35:]
+        filename = list_of_data[i][31:]
         image = sitk.ReadImage(list_of_data[i])
         new_size = [320, 320, image.GetSize()[2]]
         original_size = image.GetSize()
@@ -90,7 +90,7 @@ def resize_img(list_of_data, label = False):
 
 
 
-list_of_segmentation_data, list_of_train_data = read_data(path_of_data) 
-#resize_img(list_of_segmentation_data)    
+list_of_segmentation_data, list_of_test_data = read_data(path_of_data) 
+resize_img(list_of_test_data)    
 
 # consistent_slices(list_of_segmentation_data)
