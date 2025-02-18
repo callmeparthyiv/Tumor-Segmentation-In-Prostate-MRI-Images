@@ -38,13 +38,13 @@ def build_model(input_shape):
    
     input = Input(input_shape)
     print("input: ",input.shape)
-    s1, p1 = encoder_block(input, 128)
-    s2, p2 = encoder_block(p1, 256)
+    s1, p1 = encoder_block(input, 32)
+    s2, p2 = encoder_block(p1, 64)
     
-    b1 = conv_block(p2, 512)
+    b1 = conv_block(p2, 128)
     
-    d1 = decoder_block(b1, s2, 256)
-    d2 = decoder_block(d1, s1, 128)
+    d1 = decoder_block(b1, s2, 64)
+    d2 = decoder_block(d1, s1, 32)
     
     output = Conv3D(1, 1, padding="same", activation="sigmoid")(d2)
     model = Model(input, output, name = "U-net")
