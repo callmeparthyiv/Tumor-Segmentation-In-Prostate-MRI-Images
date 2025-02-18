@@ -27,7 +27,7 @@ def read_data(path_of_data):
 def consistent_slices(list_of_data):
     
     #number of slices needed for each image
-    no_of_target_slice = 27
+    no_of_target_slice = 28
 
     for i in range(30):
         #name of the input file
@@ -38,13 +38,13 @@ def consistent_slices(list_of_data):
         image_array = sitk.GetArrayViewFromImage(image)
         no_of_slice_in_image = image_array.shape[0]
         
-        #if number of slice is > 27 then crop image   
+        #if number of slice is > 28 then crop image   
         if(no_of_slice_in_image > no_of_target_slice):
             start = (no_of_slice_in_image - no_of_target_slice) // 2
             end = start + no_of_target_slice
             preprossed_array = image_array[start:end, :, :]
         
-        #if number of slice is < 27 then add new slices
+        #if number of slice is < 28 then add new slices
         else:
             pad = no_of_target_slice - no_of_slice_in_image
             
@@ -91,6 +91,6 @@ def resize_img(list_of_data, label = False):
 
 
 list_of_segmentation_data, list_of_test_data = read_data(path_of_data) 
-resize_img(list_of_test_data)    
+# resize_img(list_of_test_data)    
 
 # consistent_slices(list_of_segmentation_data)
