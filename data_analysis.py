@@ -1,9 +1,9 @@
 import SimpleITK as sitk
 import matplotlib.pyplot as plt
 import glob
-
+  
 #dividing training data and ground truth
-path_of_data = 'resized_preprocessed_dataset/training_data/'
+path_of_data = 'resized_preprocessed_dataset/test_data/'
 list_of_segmentation_data = glob.glob(path_of_data+'*_segmentation.mhd', recursive=True)
 list_data = glob.glob(path_of_data+'*.mhd', recursive=True)
 list_of_train_data = []
@@ -13,6 +13,7 @@ for i in list_data:
         list_of_train_data.append(i)
 
 
+#function to show the mri image
 def show(image_array):
     no_of_slides = image_array.shape[0]
     #counting number of rows and columns
@@ -38,9 +39,9 @@ def show(image_array):
     plt.tight_layout()
     plt.show() 
 
-    #reading data for analysis
-for i in range(50):   
-    image = sitk.ReadImage(list_of_train_data[i])
-    image_array = sitk.GetArrayViewFromImage(image)
-    print(image_array.shape)
+#reading data for analysis
+# for i in range(50):   
+image = sitk.ReadImage(list_of_segmentation_data[0])
+image_array = sitk.GetArrayViewFromImage(image)
+
 # show(image_array)
